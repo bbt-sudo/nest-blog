@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  email       String    @unique
+  user_name   String
+  password    String
+  fans        Int
+  articlesnum Int
+  picture     String?
+  role        String?
+  articles    article[]
+  review      review[]
+  fanList     fanList[]
+}
+
+model category {
+  id       Int       @id @default(autoincrement()) @db.UnsignedInt
+  title    String
+  articles article[]
+}
+
+model article {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  title      String
+  content    String   @db.Text
+  img        String?
+  reading    Int
+  give       Int
+  user       user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int      @db.UnsignedInt
+  category   category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int      @db.UnsignedInt
+  review     review[]
+}
+
+model review {
+  id        Int     @id @default(autoincrement()) @db.UnsignedInt
+  text      String  @db.Text
+  user      user    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int     @db.UnsignedInt
+  article   article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int     @db.UnsignedInt
+}
+
+model fanList {
+  id        Int  @id @default(autoincrement()) @db.UnsignedInt
+  Attention Int
+  user      user @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int  @db.UnsignedInt
+}

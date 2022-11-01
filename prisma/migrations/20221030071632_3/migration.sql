@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE `fanList` (
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    `Attention` INTEGER NOT NULL,
+    `userId` INTEGER UNSIGNED NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `fanList` ADD CONSTRAINT `fanList_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
